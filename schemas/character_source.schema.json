@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "character_source.schema.json",
+  "title": "Character Source Analysis",
+  "type": "object",
+  "required": ["schema_version", "character_id", "foundational_canon", "provenance"],
+  "properties": {
+    "schema_version": {"type": "integer", "minimum": 1},
+    "character_id": {"type": "string", "minLength": 1},
+    "foundational_canon": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "dispositions": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "relationships": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "voice_examples": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "uncertain_material": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "unsupported_inventions": {"type": "array", "items": {"type": "string"}},
+    "provenance": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "required": ["text", "source_ids", "confidence"],
+      "properties": {
+        "text": {"type": "string"},
+        "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
