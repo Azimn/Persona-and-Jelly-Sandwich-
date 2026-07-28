@@ -79,8 +79,8 @@ def _add_host_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--state", type=Path, default=Path("subject_state.json"))
     parser.add_argument("--runtime", type=Path, default=Path("subject_runtime.json"))
     parser.add_argument("--subject-id", default="subject-001")
-    parser.add_argument("--tick-seconds", type=float, default=300.0)
-    parser.add_argument("--max-catchup-ticks", type=int, default=288)
+    parser.add_argument("--tick-seconds", type=float, default=None)
+    parser.add_argument("--max-catchup-ticks", type=int, default=None)
 
 
 def main() -> None:
