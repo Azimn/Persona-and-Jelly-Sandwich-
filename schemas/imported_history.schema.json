@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "imported_history.schema.json",
+  "title": "Imported Character History",
+  "type": "object",
+  "required": ["schema_version", "subject_id", "records"],
+  "properties": {
+    "schema_version": {"type": "integer", "minimum": 1},
+    "subject_id": {"type": "string", "minLength": 1},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "objective_record", "source_ids", "confidence"],
+        "properties": {
+          "id": {"type": "string"},
+          "timestamp": {"type": ["string", "null"]},
+          "speakers": {"type": "array", "items": {"type": "string"}},
+          "objective_record": {"type": "string"},
+          "candidate_perception": {"type": ["string", "null"]},
+          "candidate_interpretation": {"type": ["string", "null"]},
+          "relationship_effects": {"type": "object", "additionalProperties": {"type": "number"}},
+          "preference_evidence": {"type": "array", "items": {"type": "string"}},
+          "commitments": {"type": "array", "items": {"type": "string"}},
+          "expectations": {"type": "array", "items": {"type": "string"}},
+          "open_loops": {"type": "array", "items": {"type": "string"}},
+          "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "contradictions": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
