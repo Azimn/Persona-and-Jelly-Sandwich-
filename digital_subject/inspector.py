@@ -32,11 +32,15 @@ class OrganismInspector:
     @staticmethod
     def snapshot(host: PersistentOrganismHost) -> dict[str, Any]:
         engine_snapshot = deepcopy(host.engine.debug_snapshot())
-        return {
+        snapshot = {
             "organism": engine_snapshot,
             "runtime": deepcopy(host.runtime.to_dict()),
             "world": deepcopy(host.world.state.to_dict()),
         }
+        continuity = getattr(host, "continuity", None)
+        if continuity is not None:
+            snapshot["continuity"] = deepcopy(continuity.summary())
+        return snapshot
 
     @staticmethod
     def away_report(host: PersistentOrganismHost, since_tick: int | None = None) -> AwayReport:
