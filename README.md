@@ -1,6 +1,6 @@
 # Persona and Jelly Sandwich: Digital Organism
 
-This repository joins the Gelatinblob subjective-controller idea to a **small persistent digital organism**, rather than another prompt-driven assistant. The sidecar shapes attention, appraisal, conduct, and expression; the organism supplies continuous embodied life, autobiographical ownership, and change through time.
+This repository joins the Gelatinblob subjective-controller idea to a **small persistent digital organism**, rather than another prompt-driven assistant.
 
 Its central rule is:
 
@@ -13,7 +13,7 @@ what do I notice?
         ↓
 what does it remind me of?
         ↓
-how does it affect my body, needs, relationship, and self-story?
+how does it affect my body, needs, relationships, expectations, and self-story?
         ↓
 what do I want to do?
         ↓
@@ -27,128 +27,117 @@ what has this changed about me?
 ## What the organism contains
 
 - **Homeostasis:** energy, fatigue, hunger, thirst, comfort, pain, warmth, restlessness, curiosity, loneliness, safety, focus, and satisfaction change continuously.
-- **Sensorium:** light, noise, temperature, novelty, social presence, and clutter alter the organism even when nobody speaks.
+- **Sensorium:** light, noise, temperature, novelty, social presence, and clutter affect the organism even when nobody speaks.
 - **Autonomous life:** idle time produces selected activities and first-person experiences rather than merely decaying numbers.
-- **Preferences:** authored preferences live in the cartridge; additional preferences can be learned from valenced experience.
-- **Habits:** simple trigger/action tendencies bias conduct without becoming a second planner.
-- **Relationships:** each person has trust, comfort, respect, interest, attachment, affection, safety, familiarity, obligation, and uncertainty.
-- **Self-narrative:** repeated experiences can become cautious autobiographical conclusions supported by memory IDs.
-- **World consequence separation:** the organism proposes conduct; an external world supplies success, failure, and objective changes.
-- **Cartridge ownership:** identity, homeostatic tendencies, sensitivities, preferences, habits, activities, relationship defaults, and dialogue remain outside the generic engine.
-- **Portable expression:** an LLM is optional and receives only an approved `ExpressionPacket`.
+- **Preferences and habits:** authored tendencies live in the cartridge, while experience can form additional preferences and behavioral tendencies.
+- **Relationships:** trust, comfort, respect, interest, attachment, affection, safety, familiarity, obligation, and uncertainty change independently.
+- **Autobiographical memory and self-narrative:** repeated experiences can become cautious conclusions supported by memory IDs.
+- **Epistemic continuity:** objective record, perception, interpretation, confidence, evidence, and later revision remain distinct.
+- **Expectations and commitments:** predictions, promises, deadlines, confirmation, violation, fulfillment, and failure persist across sessions.
+- **World consequence separation:** the organism proposes conduct; an external world supplies objective outcomes.
+- **Cartridge ownership:** identity, sensitivities, setpoints, preferences, habits, activities, relationship defaults, and dialogue remain outside the generic engine.
+- **Portable expression:** an LLM is optional and receives only an approved expression packet.
 
-## Persistent host added in v0.3
+## Causal continuity added in v0.5
 
-The organism can now inhabit a small persistent room and continue living while the application is closed.
-
-- Wall-clock time is converted into bounded organism ticks when the host reopens.
-- Fractional elapsed time is retained instead of discarded.
-- Long absences are capped and explicitly reported rather than silently replaying an unbounded number of cycles.
-- The room owns objective light, noise, temperature, clutter, novelty, objects, and occupants.
-- Day and night can change ambient light and sound without manufacturing conversation.
-- Arrivals, departures, and room changes become objective events experienced by the same subject.
-- Subject state and host/runtime state are written atomically to separate JSON files.
-- A read-only inspector reports what happened while nobody was watching.
-
-## Unified causal lifecycle
+Earlier continuity records could be inspected but did not necessarily alter behavior. Version 0.5 connects lived history to the existing synthesis path.
 
 ```text
-objective observation or passage of time
+past expectations, commitments, and revised interpretations
         ↓
-host applies objective room and clock state
+bounded continuity influence
         ↓
-what is happening to me?
+existing pressure and concern channels
         ↓
-homeostasis + sensorium + retrieved history
+existing engine triage, habits, and conduct selection
         ↓
-situated appraisal and relationship meaning
-        ↓
-active needs, pressures, habits, and conflicts
-        ↓
-candidate conduct and viability forecast
-        ↓
-host legal-action filter and world resolution
-        ↓
-observed consequence
-        ↓
-preference, relationship, memory, and self-narrative update
-        ↓
-renderer packet and public expression
+different conduct for an inspectable reason
 ```
+
+Continuity may raise or lower existing pressures and concerns, but it cannot select an action directly. The project retains one conduct-selection authority.
+
+Current causal mappings include:
+
+- broken or overdue commitments lower trust and raise fear and anger;
+- kept commitments raise trust and attachment and reduce fear;
+- approaching commitments create anticipation;
+- violated expectations raise fear and prediction instability;
+- confirmed expectations raise trust;
+- corrected interpretations can reduce arousal and restore self-story stability.
+
+Every individual continuity delta is bounded to `[-0.20, 0.20]`.
+
+See `docs/CAUSAL_CONTINUITY.md` for the authority boundary and required paired-history evaluation method.
+
+## Persistent host
+
+The organism can inhabit a small persistent room and continue living while the application is closed.
+
+- Wall-clock time is converted into bounded organism ticks when the host reopens.
+- Fractional elapsed time is retained.
+- Long absences are capped and explicitly reported.
+- The room owns objective light, noise, temperature, clutter, novelty, objects, and occupants.
+- Arrivals, departures, and room changes become objective events experienced by the same subject.
+- Subject, host/runtime, and continuity state are stored separately.
+- A read-only inspector reports unattended life and open continuity records.
 
 ## Architecture boundary
 
 ```text
 ENGINE
-  continuity, homeostasis, perception, appraisal, retrieval,
-  habit pressure, action selection, consequence inheritance,
+  homeostasis, perception, appraisal, retrieval, pressures,
+  habits, conduct selection, consequence inheritance,
   preference learning, relationship change, self-narrative
+
+CONTINUITY
+  epistemic records, expectations, commitments, revisions,
+  bounded influence through existing engine channels
 
 CARTRIDGE
   identity, values, sensitivities, setpoints, rates,
   initial preferences, habits, idle activities, dialogue
 
 WORLD / HOST
-  clock, files, room facts, observations, available actions,
+  clock, files, objective facts, observations, legal actions,
   objective outcomes
 
+EXTERNAL TOOLS
+  chat-history conversion, character research, cartridge authoring,
+  embeddings, batch consolidation, migration, evaluation
+
 INSPECTOR
-  read-only visibility into organism, host, and world
+  read-only visibility into organism, continuity, host, and world
 
 RENDERER
   wording and performance only
 ```
 
-The renderer is the voice. It is not the organism and cannot directly rewrite the organism's state. The host owns time and objective world facts, but it does not author beliefs, memories, or relationships. The inspector has no mutation path.
+The renderer is the voice, not the organism. The host owns time and objective facts. External tools may prepare validated assets but cannot silently become identity authority.
+
+## Runtime profiles
+
+The repository supports a layered deployment strategy:
+
+- **Tiny runtime:** deterministic engine, compact state, cartridge, bounded memory, no mandatory model or database.
+- **Standard local runtime:** persistent host, continuity, SQLite or optional embeddings, local renderer and inspector.
+- **Development workstation:** importers, cartridge builders, batch simulations, frontier-model preparation, migration, and evaluation tools.
+
+See `docs/PORTABILITY_PROFILES.md`, `docs/EXTERNAL_TOOLING.md`, and `docs/CHARACTER_IMPORT_PIPELINE.md`.
 
 ## Run
 
-In-memory demonstration:
-
 ```bash
 python -m digital_subject.cli demo
-```
-
-Create a persistent subject and room:
-
-```bash
 python -m digital_subject.cli init
-```
-
-Reopen it, catch up elapsed time, and inspect unattended life:
-
-```bash
 python -m digital_subject.cli status
-```
-
-Advance explicit simulation time:
-
-```bash
 python -m digital_subject.cli tick 12
-```
-
-Change the room:
-
-```bash
 python -m digital_subject.cli room --noise 0.75 --temperature 0.30 --name "Workshop"
-```
-
-Record presence and absence:
-
-```bash
 python -m digital_subject.cli arrive jay --name "Jay"
 python -m digital_subject.cli leave jay --name "Jay"
-```
-
-Deliver an objective interaction and render cartridge-owned expression:
-
-```bash
 python -m digital_subject.cli event greeting jay "Jay says hello." --tags jay,contact
 ```
 
-State defaults to `subject_state.json`; host and room timing defaults to `subject_runtime.json`. Both paths, the tick duration, the catch-up cap, the subject ID, and the cartridge can be changed through CLI options.
-
-Python 3.11+ is required because the cartridge loader uses the standard-library TOML parser.
+Python 3.11+ is required.
 
 ## Validation
 
@@ -156,7 +145,7 @@ Python 3.11+ is required because the cartridge loader uses the standard-library 
 pytest -q
 ```
 
-GitHub Actions runs the suite on supported Python versions. Runtime-host tests cover clock catch-up, long-absence bounding, room persistence, objective sensorium application, unattended-life reporting, and read-only inspection.
+Tests cover the organism loop, persistence, room and clock handling, epistemic separation, belief revision, expectations, commitments, read-only inspection, and paired-history behavioral divergence.
 
 ## Design constraints
 
@@ -164,10 +153,11 @@ GitHub Actions runs the suite on supported Python versions. Runtime-host tests c
 - No mandatory LLM, embeddings, database, or network
 - Character-specific material never lives in engine code
 - No invented memories
-- No direct renderer authority over identity, needs, relationships, or world facts
+- No direct renderer authority over identity, needs, relationships, continuity, or world facts
+- No second planner or competing action selector
 - No host or inspector authority to fabricate subjective conclusions
-- Simple enough to port to C99 after the behavior stabilizes
+- Simple enough to port to C99 after behavior stabilizes
 
 ## Project status
 
-This is an executable v0.3 organism runtime with continuous internal life, a persistent room, real-time catch-up, and inspection. The next major layer is a host-facing adapter protocol so a game, Telegram bridge, robot, or desktop interface can provide observations and legal actions without becoming the character.
+Version 0.5 is an executable persistent-subject runtime in which different lived histories can now produce different conduct through the same bounded synthesis path. The next major work should deepen relationship trajectories and learned predictive models, then run longer paired-history evaluations before committing to a particular game world or embodiment platform.
