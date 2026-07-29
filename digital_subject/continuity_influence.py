@@ -49,12 +49,14 @@ def derive_continuity_influence(
 
     if broken:
         weight = min(1.0, sum(item.importance for item in broken) / max(1, len(broken)))
-        pressure["trust"] = pressure.get("trust", 0.0) - (0.08 + 0.12 * weight)
-        pressure["fear"] = pressure.get("fear", 0.0) + (0.05 + 0.10 * weight)
+        pressure["trust"] = pressure.get("trust", 0.0) - (0.06 + 0.06 * weight)
+        pressure["fear"] = pressure.get("fear", 0.0) + (0.08 + 0.12 * weight)
         pressure["anger"] = pressure.get("anger", 0.0) + (0.03 + 0.07 * weight)
-        concern_key = "unreliable_commitment"
+        # Reuse the engine's existing fear action map instead of inventing a
+        # continuity-specific action channel.
+        concern_key = "fear"
         concern_description = f"{source} has failed to complete an important commitment to me."
-        concern_urgency = 0.45 + 0.35 * weight
+        concern_urgency = 0.34 + 0.28 * weight
         reasons.append("broken_or_overdue_commitment")
 
     if kept:
@@ -70,9 +72,9 @@ def derive_continuity_influence(
         if approaching:
             urgency = max(item.importance for item in approaching)
             pressure["arousal"] = pressure.get("arousal", 0.0) + 0.03 + 0.05 * urgency
-            concern_key = concern_key or "anticipated_commitment"
+            concern_key = concern_key or "arousal"
             concern_description = concern_description or f"I am waiting to see whether {source} follows through."
-            concern_urgency = max(concern_urgency, 0.30 + 0.30 * urgency)
+            concern_urgency = max(concern_urgency, 0.24 + 0.22 * urgency)
             reasons.append("commitment_due_soon")
 
     related_expectations = [
