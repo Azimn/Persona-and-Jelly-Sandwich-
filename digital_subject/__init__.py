@@ -9,6 +9,11 @@ from .continuity import (
     ReflectionInsight,
     SubjectContinuity,
 )
+from .continuity_influence import (
+    ContinuityInfluence,
+    apply_continuity_influence,
+    derive_continuity_influence,
+)
 from .engine import SubjectEngine
 from .enhanced_host import PersistentContinuityHost
 from .host import CatchUpReport, PersistentOrganismHost, RuntimeState
@@ -22,6 +27,7 @@ __all__ = [
     "CatchUpReport",
     "Commitment",
     "Consequence",
+    "ContinuityInfluence",
     "ContinuityState",
     "EpistemicRecord",
     "Event",
@@ -36,5 +42,7 @@ __all__ = [
     "SubjectContinuity",
     "SubjectEngine",
     "SubjectState",
+    "apply_continuity_influence",
+    "derive_continuity_influence",
     "load_cartridge",
 ]
