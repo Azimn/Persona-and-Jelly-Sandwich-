@@ -7,12 +7,21 @@ from typing import Any, Callable
 
 from .cartridge import Cartridge
 from .continuity import ContinuityState, SubjectContinuity
+from .continuity_influence import (
+    ContinuityInfluence,
+    apply_continuity_influence,
+    derive_continuity_influence,
+)
 from .host import CatchUpReport, PersistentOrganismHost
 from .models import Event, Experience, ExpressionPacket
 
 
 class PersistentContinuityHost(PersistentOrganismHost):
-    """Persistent host with subject-owned epistemic and commitment continuity."""
+    """Persistent host with subject-owned epistemic and commitment continuity.
+
+    Continuity contributes bounded pressures and concerns before the ordinary engine
+    synthesis path runs. It never selects conduct directly.
+    """
 
     def __init__(
         self,
@@ -24,6 +33,7 @@ class PersistentContinuityHost(PersistentOrganismHost):
         super().__init__(*args, **kwargs)
         self.continuity = continuity or SubjectContinuity()
         self.continuity_path = Path(continuity_path) if continuity_path is not None else self.state_path.with_suffix(".continuity.json")
+        self.last_continuity_influence: ContinuityInfluence | None = None
 
     @classmethod
     def open(
@@ -83,8 +93,28 @@ class PersistentContinuityHost(PersistentOrganismHost):
         return result
 
     def observe(self, event: Event) -> ExpressionPacket:
+        self.continuity.advance_deadlines(self.engine.state.tick)
+        influence = derive_continuity_influence(
+            self.continuity,
+            event,
+            tick=self.engine.state.tick,
+        )
+        apply_continuity_influence(
+            self.engine.state,
+            influence,
+            tick=self.engine.state.tick,
+        )
+        self.last_continuity_influence = influence
+
         packet = super().observe(event)
         private = packet.private_content if isinstance(packet.private_content, dict) else {}
+        private["continuity_influence"] = {
+            "source": influence.source,
+            "pressure_deltas": influence.pressure_deltas,
+            "concern_key": influence.concern_key,
+            "concern_urgency": influence.concern_urgency,
+            "reasons": influence.reasons,
+        }
         evidence = tuple(str(value) for value in private.get("matched_memory_ids", ()))
         self.continuity.observe(
             event,
